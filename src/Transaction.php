@@ -194,7 +194,7 @@ class Transaction
         $xml->addChild('store_id', $gateway->id);
         $xml->addChild('api_token', $gateway->token);
 
-        if (!empty($params['status_check'])) {
+        if (isset($params['status_check'])) {
             $xml->addChild('status_check', $params['status_check']);
         }
 
@@ -241,7 +241,7 @@ class Transaction
             }
         }
 
-        if ($gateway->cof && ($efraud || $cc_action)) {
+        if ($gateway->cof && ($efraud || $cc_action) && !isset($params['status_check'])) {
             $cofInfo = $type->addChild('cof_info');
             if (!empty($params['payment_indicator'])) {
                 $cofInfo->addChild('payment_indicator', $params['payment_indicator']);
@@ -258,7 +258,7 @@ class Transaction
             unset($params['payment_indicator'], $params['payment_information'], $params['issuer_id']);
         }
 
-        if (!empty($params['status_check'])) {
+        if (isset($params['status_check'])) {
             $type->addChild('pan', ' ');
             $type->addChild('expdate', ' ');
             unset($params['status_check']);
