@@ -198,7 +198,7 @@ class Gateway
     public function getPurchase(array $params = [])
     {
         $params = array_merge($params, [
-            'type' => 'get_purchase',
+            'type' => 'purchase',
             'crypt_type' => Crypt::SSL_ENABLED_MERCHANT,
         ]);
 
