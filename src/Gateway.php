@@ -189,6 +189,25 @@ class Gateway
     }
 
     /**
+     * Get a purchased transaction.
+     *
+     * @param array $params
+     *
+     * @return \CraigPaul\Moneris\Response
+     */
+    public function getPurchase(array $params = [])
+    {
+        $params = array_merge($params, [
+            'type' => 'get_purchase',
+            'crypt_type' => Crypt::SSL_ENABLED_MERCHANT,
+        ]);
+
+        $transaction = $this->transaction($params);
+
+        return $this->process($transaction);
+    }
+
+    /**
      * Process a transaction through the Moneris API.
      *
      * @param \CraigPaul\Moneris\Transaction $transaction
