@@ -74,6 +74,25 @@ class TransactionTest extends TestCase
     }
 
     /** @test */
+    public function it_can_prepare_status_check_values()
+    {
+        $params = [
+            'type' => 'purchase',
+            'order_id' => uniqid('1234-56789', true),
+            'amount' => '1.00',
+            'status_check' => 'true'
+        ];
+
+        $transaction = new Transaction($this->gateway, $params);
+
+        $xml = $transaction->toXml();
+        $xml = simplexml_load_string($xml);
+
+        $this->assertEquals(null, $xml['purchase']['pan']);
+        $this->assertEquals(null, $xml['purchase']['expdate']);
+    }
+
+    /** @test */
     public function it_can_prepare_parameters_that_were_submitted_improperly()
     {
         $order = '   1234-567890';

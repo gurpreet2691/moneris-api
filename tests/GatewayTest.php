@@ -98,6 +98,22 @@ class GatewayTest extends TestCase
     }
 
     /** @test */
+    public function it_can_verify_a_purchase()
+    {
+        $response = $this->gateway->purchase($this->params);
+        $receipt_id = $response->receipt()->read('id');
+
+        $response = $this->gateway->getPurchase([
+            'order_id' => $receipt_id,
+            'amount' => '1.00',
+            'status_check' => 'true',
+        ]);
+
+        $this->assertEquals(Response::class, get_class($response));
+        $this->assertTrue($response->successful);
+    }
+
+    /** @test */
     public function it_can_make_a_purchase_and_receive_a_response()
     {
         $response = $this->gateway->purchase($this->params);
