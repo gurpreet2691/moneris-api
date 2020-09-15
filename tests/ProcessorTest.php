@@ -103,7 +103,29 @@ class ProcessorTest extends TestCase
         ]);
 
         $this->assertTrue($response->successful);
+
+        return $response->receipt()->read('id');
     }
+
+    /**
+     * @test
+     * @depends it_can_submit_a_avs_secured_request_to_the_moneris_api
+     */
+    public function it_can_submit_a_get_request_to_moneris_api($order_id)
+    {
+        $params = [
+            'type' => 'purchase',
+            'order_id' => $order_id,
+            'amount' => '1.00',
+            'status_check' => 'true'
+        ];
+
+        $transaction = new Transaction($this->gateway, $params);
+        $response = $this->processor->process($transaction);
+
+        $this->assertTrue($response->successful);
+    }
+
 
     /** @test */
     public function it_can_submit_a_cvd_secured_request_to_the_moneris_api()
